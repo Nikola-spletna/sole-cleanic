@@ -93,6 +93,9 @@ svg.arrows circle{fill:var(--ink);opacity:0;transition:opacity .3s .6s}
   #coD,svg.arrows{display:none}
   #coM{display:flex;position:absolute;left:0;right:0;bottom:18px;gap:10px;overflow-x:auto;padding:4px 16px;scroll-snap-type:x mandatory}
   #coM .co{position:static;scroll-snap-align:start;flex:none}
+  .on #coM{pointer-events:auto;touch-action:pan-x pan-y;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  #coM::-webkit-scrollbar{display:none}
+  #coM::after{content:"";flex:0 0 4px}
 }
 
 /* product illustration (placeholder until real product photos) */
