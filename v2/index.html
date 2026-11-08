@@ -124,7 +124,9 @@ svg.arrows circle{fill:var(--ink);opacity:0;transition:opacity .3s .6s}
 .choice{animation:sc-breathe 3.2s ease-in-out infinite}.choice.pink{animation-delay:1.6s}
 @keyframes sc-breathe{0%,100%{transform:scale(1)}12%{transform:scale(1.025)}24%{transform:scale(1)}}
 .choice:hover{animation:none}
-.choice:hover::after,.choice:focus-visible::after{animation-play-state:paused;opacity:0}
+/* on hover the ring snaps back from wherever it is to the button's edge and fades */
+.choice.hov::after{animation:none;transform:var(--rt,none);opacity:var(--ro,0);transition:none}
+.choice.hov.hov2::after{transform:scale(1);opacity:0;transition:transform .22s cubic-bezier(.2,.8,.2,1),opacity .26s ease-out}
 @keyframes sc-pulse{0%{transform:scale(1);opacity:.9}60%{transform:scale(1.06,1.28);opacity:0}100%{transform:scale(1.06,1.28);opacity:0}}
 @media (prefers-reduced-motion:reduce){.choice,.choice::after{animation:none}.choice::after{opacity:0}}
 .ch h2{font-size:clamp(28px,3.4vw,46px);margin:10px 0 12px}
@@ -767,6 +769,14 @@ IMG.clean=new Array(N);IMG.dirty=new Array(N);
   await Promise.all([1,2,3,4,5,6].map(worker));
 })();
 requestAnimationFrame(frame);
+(function(){
+  document.querySelectorAll('.choice').forEach(el=>{
+    const on=()=>{const cs=getComputedStyle(el,'::after');el.style.setProperty('--rt',cs.transform);el.style.setProperty('--ro',cs.opacity);el.classList.add('hov');void el.offsetWidth;el.classList.add('hov2')};
+    const off=()=>el.classList.remove('hov','hov2');
+    el.addEventListener('pointerenter',on);el.addEventListener('pointerleave',off);
+    el.addEventListener('focus',on);el.addEventListener('blur',off);
+  });
+})();
 </script>
 </body>
 </html>
