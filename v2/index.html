@@ -117,6 +117,16 @@ svg.arrows circle{fill:var(--ink);opacity:0;transition:opacity .3s .6s}
 .choice small{grid-column:1;color:var(--ink);opacity:.75;font-size:13.5px}
 .choice .ar{grid-row:1/span 2;grid-column:2;font-size:20px}
 .choice.mint{background:var(--mint)} .choice.pink{background:var(--pink)}
+/* gentle pulse so the two main choices catch the eye; they alternate */
+.choice{position:relative;isolation:isolate}
+.choice::after{content:"";position:absolute;inset:0;border-radius:inherit;z-index:-1;animation:sc-pulse 3.2s ease-out infinite;pointer-events:none}
+.choice.mint::after{border:2.5px solid var(--mint-ink)} .choice.pink::after{border:2.5px solid var(--pink-ink);animation-delay:1.6s}
+.choice{animation:sc-breathe 3.2s ease-in-out infinite}.choice.pink{animation-delay:1.6s}
+@keyframes sc-breathe{0%,100%{transform:scale(1)}12%{transform:scale(1.025)}24%{transform:scale(1)}}
+.choice:hover{animation:none}
+.choice:hover::after,.choice:focus-visible::after{animation-play-state:paused;opacity:0}
+@keyframes sc-pulse{0%{transform:scale(1);opacity:.9}60%{transform:scale(1.06,1.28);opacity:0}100%{transform:scale(1.06,1.28);opacity:0}}
+@media (prefers-reduced-motion:reduce){.choice,.choice::after{animation:none}.choice::after{opacity:0}}
 .ch h2{font-size:clamp(28px,3.4vw,46px);margin:10px 0 12px}
 .ch p{color:var(--muted)}
 .panel{display:block;text-decoration:none;background:rgba(255,255,255,.9);border:1px solid var(--line);border-radius:22px;padding:22px;backdrop-filter:blur(6px);transition:border-color .2s,transform .2s}
