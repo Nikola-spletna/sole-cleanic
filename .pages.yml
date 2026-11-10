@@ -1,0 +1,146 @@
+# Urejevalnik vsebine za The Sole Cleanic (Pages CMS: app.pagescms.org)
+media:
+  input: v2/media
+  output: /media
+
+content:
+  - name: izdelki
+    label: Izdelki DRIPS
+    type: file
+    path: v2/content/izdelki.json
+    format: json
+    list: true
+    fields:
+      - { name: ime, label: Ime izdelka, type: string, required: true }
+      - { name: vrsta, label: "Vrsta (npr. Čistilo)", type: string }
+      - { name: opis, label: Opis, type: text }
+      - { name: cena, label: Cena v €, type: number }
+      - { name: slika, label: Fotografija, type: image }
+      - { name: izpostavljen, label: Velika kartica v trgovini, type: boolean }
+      - { name: ob_supergi, label: "Pokaži ob očiščeni supergi (največ 3)", type: boolean }
+
+  - name: cenik
+    label: Cenik čiščenja
+    type: file
+    path: v2/content/cenik.json
+    format: json
+    fields:
+      - name: paketi
+        label: Paketi čiščenja
+        type: object
+        list: true
+        fields:
+          - { name: ime, label: Ime paketa, type: string, required: true }
+          - { name: oznaka, label: "Napis nad imenom (npr. Najbolj priljubljeno)", type: string }
+          - { name: cena, label: Cena v €, type: number }
+          - name: barva
+            label: Barva kartice
+            type: select
+            options:
+              values: [bela, mint, roza]
+          - { name: vkljuceno, label: Kaj je vključeno, type: string, list: true }
+      - name: dodatne
+        label: Dodatne storitve
+        type: object
+        list: true
+        fields:
+          - { name: ime, label: Storitev, type: string, required: true }
+          - { name: cena, label: Cena v €, type: number }
+      - name: roki
+        label: Roki in popusti
+        type: object
+        list: true
+        fields:
+          - { name: naslov, label: Naslov, type: string }
+          - { name: besedilo, label: Besedilo, type: text }
+          - { name: poudarjeno, label: Poudari (mint barva), type: boolean }
+
+  - name: lokacije
+    label: Prevzemna mesta
+    type: file
+    path: v2/content/lokacije.json
+    format: json
+    list: true
+    fields:
+      - { name: ime, label: Ime trgovine, type: string, required: true }
+      - { name: instagram, label: "Instagram (npr. @trgovina)", type: string }
+      - name: mesto
+        label: Mesto (določi točko na zemljevidu)
+        type: select
+        options:
+          values: [Ljubljana, Kranj, Maribor, Celje, Koper, Novo mesto, Nova Gorica, Zagreb]
+      - { name: naslov, label: Naslov, type: string }
+      - { name: urnik, label: Delovni čas, type: string }
+      - { name: vzorec, label: Označi kot izmišljen podatek (samo za demo), type: boolean }
+
+  - name: dogodki
+    label: Dogodki
+    type: file
+    path: v2/content/dogodki.json
+    format: json
+    list: true
+    fields:
+      - name: datum
+        label: Datum (pretekli dogodki se sami skrijejo)
+        type: date
+        options:
+          format: yyyy-MM-dd
+      - { name: naslov, label: Ime dogodka, type: string, required: true }
+      - { name: kraj, label: Kraj, type: string }
+      - { name: ura, label: "Ura (npr. 10.00–16.00)", type: string }
+      - { name: vzorec, label: Označi kot izmišljen podatek (samo za demo), type: boolean }
+
+  - name: rezultati
+    label: Rezultati pred/po
+    type: file
+    path: v2/content/rezultati.json
+    format: json
+    list: true
+    fields:
+      - { name: pred, label: Fotografija pred čiščenjem, type: image }
+      - { name: po, label: Fotografija po čiščenju (isti kot), type: image }
+      - { name: opis, label: "Opis (npr. Jordan 1 · Premium čiščenje)", type: string }
+      - { name: vzorec, label: Označi kot vzorčno fotografijo (samo za demo), type: boolean }
+
+  - name: pasica
+    label: Sezonska pasica
+    type: file
+    path: v2/content/pasica.json
+    format: json
+    fields:
+      - { name: vklopljena, label: Pokaži pasico na vrhu strani, type: boolean }
+      - { name: zima, label: "Besedilo pozimi (dec–feb)", type: string }
+      - { name: pomlad, label: "Besedilo spomladi (mar–maj)", type: string }
+      - { name: poletje, label: "Besedilo poleti (jun–avg)", type: string }
+      - { name: jesen, label: "Besedilo jeseni (sep–nov)", type: string }
+
+  - name: onas
+    label: O nas
+    type: file
+    path: v2/content/onas.json
+    format: json
+    fields:
+      - { name: uvod, label: Uvodno besedilo, type: text }
+      - name: okvirji
+        label: Okvirji z besedilom
+        type: object
+        list: true
+        fields:
+          - { name: naslov, label: Naslov, type: string }
+          - { name: besedilo, label: Besedilo, type: text }
+          - name: barva
+            label: Barva
+            type: select
+            options:
+              values: [bela, mint, roza]
+          - { name: vzorec, label: Označi kot izmišljen podatek (samo za demo), type: boolean }
+
+  - name: nastavitve
+    label: Poštnina
+    type: file
+    path: v2/content/nastavitve.json
+    format: json
+    fields:
+      - { name: postnina, label: Poštnina v €, type: number }
+      - { name: brezplacna_nad, label: "Brezplačna poštnina nad (€, 0 = nikoli)", type: number }
+      - { name: postnina_vzorec, label: Označi kot izmišljen podatek (samo za demo), type: boolean }

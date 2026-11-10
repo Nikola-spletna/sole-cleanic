@@ -353,11 +353,7 @@ footer.foot nav{display:flex;flex-wrap:wrap;gap:14px}
         <a class="txt panel" href="#ciscenje">
           <div class="label">Čiščenje · cenik</div>
           <h2>Cena na par.</h2>
-          <dl class="mini">
-            <div><dt>Osnovno čiščenje</dt><dd>13,90 €</dd></div>
-            <div><dt>Premium čiščenje</dt><dd>15,90 €</dd></div>
-            <div><dt>Zimsko čiščenje</dt><dd>16,90 €</dd></div>
-          </dl>
+          <dl class="mini" id="miniPrices"></dl>
           <span class="more">Celoten cenik in dodatne storitve →</span>
         </a>
       </section>
@@ -410,27 +406,11 @@ footer.foot nav{display:flex;flex-wrap:wrap;gap:14px}
     <h1>Zrihtamo mi.</h1>
     <p class="lede">Izberi paket, prinesi superge na prevzemno mesto in jih dobi nazaj očiščene v 7 delovnih dneh.</p>
   </header>
-  <div class="grid g3">
-    <div class="box"><div class="label">Paket</div><h3>Osnovno čiščenje</h3><div class="price">13,90 €</div><ul><li>Čiščenje s krtačo</li><li>Eko krpa in DRIPS čistilo</li><li>Goba za gumijast podplat</li><li>Čiščenje vezalk</li></ul><a class="btn ghost" href="#lokacije">Najdi prevzemno mesto</a></div>
-    <div class="box mint"><div class="label">Najbolj priljubljeno <span class="fake">(izmišljen podatek)</span></div><h3>Premium čiščenje</h3><div class="price">15,90 €</div><ul><li>Vse iz osnovnega čiščenja</li><li>Notranji sprej proti vonju</li><li>Impregnacija s sprejem ali kremo</li></ul><a class="btn dark" href="#lokacije">Najdi prevzemno mesto</a></div>
-    <div class="box pink"><div class="label">Za mrzle dni</div><h3>Zimsko čiščenje</h3><div class="price">16,90 €</div><ul><li>Vse iz premium čiščenja</li><li>Dodatna zaščita za zimsko obutev</li></ul><a class="btn ghost" href="#lokacije">Najdi prevzemno mesto</a></div>
-  </div>
+  <div class="grid g3" id="pkgs"></div>
   <h2>Dodatne storitve</h2>
-  <div class="rows">
-    <div><b>Dodatno čiščenje podplata (mokro, s čistilom)</b><span>3,00 €</span></div>
-    <div><b>Suho čiščenje vložka</b><span>3,00 €</span></div>
-    <div><b>Mokro čiščenje vložka</b><span>5,00 €</span></div>
-    <div><b>Nove bele vezalke</b><span>5,00 €</span></div>
-    <div><b>Odstranitev gub na sprednji kapici</b><span>10,00 €</span></div>
-    <div><b>Beljenje gume z osnovnim čiščenjem</b><span>38,80 €</span></div>
-    <div><b>Beljenje gume s premium čiščenjem</b><span>40,80 €</span></div>
-  </div>
+  <div class="rows" id="extras"></div>
   <h2>Roki in popusti</h2>
-  <div class="grid g3">
-    <div class="box"><b>Redni rok</b><p>Očiščene superge dostavimo v roku 7 delovnih dni.</p></div>
-    <div class="box"><b>Hitreje</b><p>Vrnitev v 4 dneh za doplačilo 50 % (do 2 para) ali v 2 dneh za doplačilo 70 % (1 par).</p></div>
-    <div class="box mint"><b>3 pari ali več</b><p>10 % popusta na celotno naročilo.</p></div>
-  </div>
+  <div class="grid g3" id="terms"></div>
   <h2>Kako poteka</h2>
   <ol class="steps3">
     <li><b>Izberi paket</b><span>Osnovno, premium ali zimsko, plus dodatne storitve.</span></li>
@@ -468,7 +448,7 @@ footer.foot nav{display:flex;flex-wrap:wrap;gap:14px}
     <p class="lede">Povleci drsnik čez fotografijo in poglej razliko pred čiščenjem in po njem.</p>
   </header>
   <div class="grid g2" id="gallery"></div>
-  <p style="margin-top:18px;color:var(--muted);font-size:14px">Vzorčne fotografije. V končni strani bodo tu vaši pravi rezultati.</p>
+  
 </section>
 
 <section class="page" data-page="dogodki" hidden>
@@ -492,12 +472,9 @@ footer.foot nav{display:flex;flex-wrap:wrap;gap:14px}
   <header>
     <div class="label">O nas</div>
     <h1>Jana in Andraž.</h1>
-    <p class="lede">Die-hard ljubitelja superg, ki sta leta 2017 začela prvo profesionalno storitev čiščenja obutve v Sloveniji.</p>
+    <p class="lede" id="aboutLede"></p>
   </header>
-  <div class="grid g2">
-    <div class="box mint"><h3>Zakaj čistimo</h3><p>Opazila sva, koliko dobrih superg konča umazanih na dnu omare. Zato sva jih začela čistiti sama, najprej za prijatelje, potem za vse. <span class="fake">(izmišljen podatek)</span></p></div>
-    <div class="box pink"><h3>Manj hitre mode</h3><p>V poplavi hitre mode želiva ljudem približati trajnostno misel. Redno čiščenje pomeni, da superge zdržijo dlje in jih ni treba tako hitro zamenjati.</p></div>
-  </div>
+  <div class="grid g2" id="about"></div>
   <p style="margin-top:18px;color:var(--muted);font-size:14px">Besedila na tej strani bosta pripravila Jana in Andraž.</p>
 </section>
 
@@ -546,32 +523,27 @@ const fmt=v=>v.toFixed(2).replace('.',',')+' €';
 const $=s=>document.querySelector(s);
 const FAKE='<span class="fake">(izmišljen podatek)</span>';
 
-/* ---------- data ---------- */
-const PRODUCTS=[
-  {k:'box',n:'DRIPS Sneaker Care Box',t:'Celoten komplet',d:'Vsebuje čistilo, impregnacijski sprej, deodorant, majhno krpo, krtačo in vezalke.',p:39.90,feat:1},
-  {k:'cleaner',n:'DRIPS Cleaner',t:'Čistilo',d:'Čistilo za superge, ki ga uporabljamo pri vsakem čiščenju.',p:13.90},
-  {k:'freshner',n:'DRIPS Freshner',t:'Deodorant',d:'Deodorant za svež vonj v notranjosti superg.',p:11.90},
-  {k:'protector',n:'DRIPS Protector',t:'Impregnacijski sprej',d:'Impregnacijski sprej, ki superge zaščiti pred vodo in umazanijo.',p:14.90},
-  {k:'set',n:'DRIPS čistilo & krtačka',t:'Komplet',d:'Čistilo skupaj s krtačko.',p:16.90},
-
-];
-const P=Object.fromEntries(PRODUCTS.map(p=>[p.k,p]));
-const PIMG={"cleaner": "prod/cleaner.jpg", "protector": "prod/protector.jpg", "freshner": "prod/freshner.jpg", "set": "prod/set.jpg", "box": "prod/box.jpg"};
-const pimg=k=>`<div class="pimg" data-k="${k}"><img src="${PIMG[k]}" alt="${P[k].n}" loading="lazy"></div>`;
-const LOCS=[
-  {id:'gros',name:'Gros Basket Shop',h:'@grosbasketshop',city:'Ljubljana',addr:'Trubarjeva cesta 5, Ljubljana',lon:14.508,lat:46.055},
-  {id:'ent',name:'ENT Bignose',h:'@ent.bignose',city:'Ljubljana',addr:'Čopova ulica 12, Ljubljana',lon:14.503,lat:46.051},
-  {id:'lim',name:'Limittted Sneaker Boutique',h:'@limittted_sneaker_boutique',city:'Ljubljana',addr:'Slovenska cesta 40, Ljubljana',lon:14.502,lat:46.056},
-  {id:'ara',name:'Ara Shop Artifex',h:'',city:'Ljubljana',addr:'Wolfova ulica 3, Ljubljana',lon:14.506,lat:46.050},
-  {id:'barb',name:'Barberija Squad',h:'@barberijansquad',city:'Koper',addr:'Kidričeva ulica 20, Koper',lon:13.730,lat:45.548},
-  {id:'groshr',name:'Gros Basket Zagreb',h:'@grosbasket.hr',city:'Zagreb',addr:'Ilica 50, Zagreb',lon:15.966,lat:45.813}
-];
-const EVENTS=[
-  {d:'25',m:'OKT',t:'Sneaker Clean Day',w:'Gros Basket Shop, Ljubljana',h:'sob, 11.00–17.00'},
-  {d:'08',m:'NOV',t:'Pop-up čiščenje na obali',w:'Barberija Squad, Koper',h:'sob, 10.00–16.00',p:1},
-  {d:'22',m:'NOV',t:'Zimska priprava superg',w:'Gros Basket Zagreb',h:'sob, 11.00–18.00'},
-  {d:'13',m:'DEC',t:'Božični DRIPS pop-up',w:'Limittted Sneaker Boutique, Ljubljana',h:'sob, 10.00–19.00',p:1}
-];
+/* ---------- content (edited by Jana & Andraž in the editor; files in content/) ---------- */
+const DEFAULTS={"cenik": {"paketi": [{"ime": "Osnovno čiščenje", "oznaka": "Paket", "cena": 13.9, "barva": "bela", "vkljuceno": ["Čiščenje s krtačo", "Eko krpa in DRIPS čistilo", "Goba za gumijast podplat", "Čiščenje vezalk"]}, {"ime": "Premium čiščenje", "oznaka": "Najbolj priljubljeno", "cena": 15.9, "barva": "mint", "vkljuceno": ["Vse iz osnovnega čiščenja", "Notranji sprej proti vonju", "Impregnacija s sprejem ali kremo"]}, {"ime": "Zimsko čiščenje", "oznaka": "Za mrzle dni", "cena": 16.9, "barva": "roza", "vkljuceno": ["Vse iz premium čiščenja", "Dodatna zaščita za zimsko obutev"]}], "dodatne": [{"ime": "Dodatno čiščenje podplata (mokro, s čistilom)", "cena": 3}, {"ime": "Suho čiščenje vložka", "cena": 3}, {"ime": "Mokro čiščenje vložka", "cena": 5}, {"ime": "Nove bele vezalke", "cena": 5}, {"ime": "Odstranitev gub na sprednji kapici", "cena": 10}, {"ime": "Beljenje gume z osnovnim čiščenjem", "cena": 38.8}, {"ime": "Beljenje gume s premium čiščenjem", "cena": 40.8}], "roki": [{"naslov": "Redni rok", "besedilo": "Očiščene superge dostavimo v roku 7 delovnih dni.", "poudarjeno": false}, {"naslov": "Hitreje", "besedilo": "Vrnitev v 4 dneh za doplačilo 50 % (do 2 para) ali v 2 dneh za doplačilo 70 % (1 par).", "poudarjeno": false}, {"naslov": "3 pari ali več", "besedilo": "10 % popusta na celotno naročilo.", "poudarjeno": true}]}, "dogodki": [{"datum": "2026-11-21", "naslov": "Zimska priprava superg", "kraj": "Gros Basket Zagreb", "ura": "11.00–18.00", "vzorec": true}, {"datum": "2026-12-12", "naslov": "Božični DRIPS pop-up", "kraj": "Limittted Sneaker Boutique, Ljubljana", "ura": "10.00–19.00", "vzorec": true}, {"datum": "2027-01-16", "naslov": "Pop-up čiščenje na obali", "kraj": "Barberija Squad, Koper", "ura": "10.00–16.00", "vzorec": true}, {"datum": "2027-02-13", "naslov": "Sneaker Clean Day", "kraj": "Gros Basket Shop, Ljubljana", "ura": "11.00–17.00", "vzorec": true}], "izdelki": [{"ime": "DRIPS Sneaker Care Box", "vrsta": "Celoten komplet", "opis": "Vsebuje čistilo, impregnacijski sprej, deodorant, majhno krpo, krtačo in vezalke.", "cena": 39.9, "slika": "/media/box.jpg", "izpostavljen": true, "ob_supergi": false}, {"ime": "DRIPS Cleaner", "vrsta": "Čistilo", "opis": "Čistilo za superge, ki ga uporabljamo pri vsakem čiščenju.", "cena": 13.9, "slika": "/media/cleaner.jpg", "izpostavljen": false, "ob_supergi": true}, {"ime": "DRIPS Freshner", "vrsta": "Deodorant", "opis": "Deodorant za svež vonj v notranjosti superg.", "cena": 11.9, "slika": "/media/freshner.jpg", "izpostavljen": false, "ob_supergi": true}, {"ime": "DRIPS Protector", "vrsta": "Impregnacijski sprej", "opis": "Impregnacijski sprej, ki superge zaščiti pred vodo in umazanijo.", "cena": 14.9, "slika": "/media/protector.jpg", "izpostavljen": false, "ob_supergi": true}, {"ime": "DRIPS čistilo & krtačka", "vrsta": "Komplet", "opis": "Čistilo skupaj s krtačko.", "cena": 16.9, "slika": "/media/set.jpg", "izpostavljen": false, "ob_supergi": false}], "lokacije": [{"ime": "Gros Basket Shop", "instagram": "@grosbasketshop", "mesto": "Ljubljana", "naslov": "Trubarjeva cesta 5, Ljubljana", "urnik": "pon–pet 10.00–19.00, sob 9.00–14.00", "vzorec": true}, {"ime": "ENT Bignose", "instagram": "@ent.bignose", "mesto": "Ljubljana", "naslov": "Čopova ulica 12, Ljubljana", "urnik": "pon–pet 10.00–19.00, sob 9.00–14.00", "vzorec": true}, {"ime": "Limittted Sneaker Boutique", "instagram": "@limittted_sneaker_boutique", "mesto": "Ljubljana", "naslov": "Slovenska cesta 40, Ljubljana", "urnik": "pon–pet 10.00–19.00, sob 9.00–14.00", "vzorec": true}, {"ime": "Ara Shop Artifex", "instagram": "", "mesto": "Ljubljana", "naslov": "Wolfova ulica 3, Ljubljana", "urnik": "pon–pet 10.00–19.00, sob 9.00–14.00", "vzorec": true}, {"ime": "Barberija Squad", "instagram": "@barberijansquad", "mesto": "Koper", "naslov": "Kidričeva ulica 20, Koper", "urnik": "pon–pet 10.00–19.00, sob 9.00–14.00", "vzorec": true}, {"ime": "Gros Basket Zagreb", "instagram": "@grosbasket.hr", "mesto": "Zagreb", "naslov": "Ilica 50, Zagreb", "urnik": "pon–pet 10.00–19.00, sob 9.00–14.00", "vzorec": true}], "nastavitve": {"postnina": 3.9, "brezplacna_nad": 40, "postnina_vzorec": true}, "onas": {"uvod": "Die-hard ljubitelja superg, ki sta leta 2017 začela prvo profesionalno storitev čiščenja obutve v Sloveniji.", "okvirji": [{"naslov": "Zakaj čistimo", "besedilo": "Opazila sva, koliko dobrih superg konča umazanih na dnu omare. Zato sva jih začela čistiti sama, najprej za prijatelje, potem za vse.", "barva": "mint", "vzorec": true}, {"naslov": "Manj hitre mode", "besedilo": "V poplavi hitre mode želiva ljudem približati trajnostno misel. Redno čiščenje pomeni, da superge zdržijo dlje in jih ni treba tako hitro zamenjati.", "barva": "roza", "vzorec": false}]}, "pasica": {"vklopljena": true, "zima": "Zimsko čiščenje z dodatno zaščito za mrzle dni · 16,90 €", "pomlad": "Pomlad je tu: beljenje rumene gume od 38,80 €", "poletje": "Poletje v čistih supergah: Premium čiščenje 15,90 €", "jesen": "Pripravi superge na zimo: zimsko čiščenje 16,90 €"}, "rezultati": [{"pred": "frames/d000.jpg", "po": "frames/c000.jpg", "opis": "Air Max 95 · Premium čiščenje", "vzorec": true}, {"pred": "frames/d013.jpg", "po": "frames/c013.jpg", "opis": "Air Max 95 · Osnovno čiščenje", "vzorec": true}, {"pred": "frames/d054.jpg", "po": "frames/c054.jpg", "opis": "Air Max 95 · Zimsko čiščenje", "vzorec": true}, {"pred": "frames/d092.jpg", "po": "frames/c092.jpg", "opis": "Air Max 95 · Beljenje gume", "vzorec": true}]};
+let C=DEFAULTS;
+const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
+const src=u=>{u=String(u||'');return u.startsWith('/')?u.slice(1):u};
+const slug=t=>String(t).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const num=v=>{const n=parseFloat(String(v).replace(',','.'));return isNaN(n)?0:n};
+let PRODUCTS=[],P={},PIMG={},LOCS=[];
+function prepare(){
+  PRODUCTS=(C.izdelki||[]).filter(x=>x&&x.ime).map(x=>({k:slug(x.ime),n:x.ime,t:x.vrsta||'',d:x.opis||'',p:num(x.cena),img:src(x.slika),feat:!!x.izpostavljen,co:!!x.ob_supergi}));
+  P=Object.fromEntries(PRODUCTS.map(p=>[p.k,p]));PIMG=Object.fromEntries(PRODUCTS.map(p=>[p.k,p.img]));
+  LOCS=(C.lokacije||[]).filter(l=>l&&l.ime).map((l,i)=>({id:'l'+i,name:l.ime,h:l.instagram||'',city:l.mesto||'Ljubljana',addr:l.naslov||'',hours:l.urnik||'',fake:!!l.vzorec}));
+  Object.keys(cart).forEach(k=>{if(!P[k])delete cart[k]});
+}
+const fakeIf=b=>b?' '+FAKE:'';
+const pimg=k=>`<div class="pimg" data-k="${k}"><img src="${esc(PIMG[k])}" alt="${esc(P[k].n)}" loading="lazy"></div>`;
+async function loadContent(){
+  const keys=Object.keys(DEFAULTS);
+  const got=await Promise.all(keys.map(k=>fetch('content/'+k+'.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).catch(()=>null)));
+  const c={};keys.forEach((k,i)=>c[k]=got[i]??DEFAULTS[k]);C=c;
+}
 
 /* ---------- toast ---------- */
 let tt;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),1800)}
@@ -580,7 +552,7 @@ let tt;function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('sh
 let cart={};
 try{cart=JSON.parse(localStorage.getItem('sc-cart')||'{}')||{}}catch(e){cart={}}
 const saveCart=()=>{try{localStorage.setItem('sc-cart',JSON.stringify(cart))}catch(e){}};
-const SHIP=3.90,FREE=40;
+const shipCfg=()=>({ship:num(C.nastavitve?.postnina),free:num(C.nastavitve?.brezplacna_nad),fake:!!C.nastavitve?.postnina_vzorec});
 function add(k){cart[k]=(cart[k]||0)+1;saveCart();renderCart();toast(P[k].n+' je v košarici')}
 function setQ(k,q){if(q<=0)delete cart[k];else cart[k]=q;saveCart();renderCart()}
 function renderCart(done){
@@ -588,9 +560,9 @@ function renderCart(done){
   const body=$('#cartBody');
   if(done){body.innerHTML=`<div class="ok"><b>Hvala, naročilo je oddano!</b><p style="margin-top:6px">Potrditev in navodila za plačilo dobiš na e-pošto. V končni strani naročilo pride na thesolecleanic@gmail.com.</p></div><a class="btn ghost" href="#trgovina" id="backShop">Nazaj v trgovino</a>`;return}
   if(!n){body.innerHTML=`<p class="empty">Košarica je prazna.</p><a class="btn pink" href="#trgovina">Nakupuj DRIPS</a>`;return}
-  let sub=0;const items=Object.entries(cart).map(([k,q])=>{sub+=P[k].p*q;return `<div class="ci">${pimg(k)}<div><b>${P[k].n}</b><div class="qty"><button type="button" data-q="${k}" data-d="-1" aria-label="Manj">−</button><span>${q}</span><button type="button" data-q="${k}" data-d="1" aria-label="Več">+</button></div></div><span class="p">${fmt(P[k].p*q)}</span></div>`}).join('');
-  const ship=sub>=FREE?0:SHIP;
-  body.innerHTML=items+`<div class="sum"><div><span>Vmesni seštevek</span><span>${fmt(sub)}</span></div><div><span>Poštnina ${FAKE}</span><span>${ship?fmt(ship):'brezplačna'}</span></div><div style="font-size:13px;color:var(--muted)">Brezplačna poštnina nad ${fmt(FREE)} ${FAKE}</div><div class="t"><span>Skupaj</span><span>${fmt(sub+ship)}</span></div></div>
+  let sub=0;const items=Object.entries(cart).map(([k,q])=>{sub+=P[k].p*q;return `<div class="ci">${pimg(k)}<div><b>${esc(P[k].n)}</b><div class="qty"><button type="button" data-q="${k}" data-d="-1" aria-label="Manj">−</button><span>${q}</span><button type="button" data-q="${k}" data-d="1" aria-label="Več">+</button></div></div><span class="p">${fmt(P[k].p*q)}</span></div>`}).join('');
+  const {ship:SHIP,free:FREE,fake:SF}=shipCfg();const ship=(FREE&&sub>=FREE)?0:SHIP;
+  body.innerHTML=items+`<div class="sum"><div><span>Vmesni seštevek</span><span>${fmt(sub)}</span></div><div><span>Poštnina${fakeIf(SF)}</span><span>${ship?fmt(ship):'brezplačna'}</span></div>${FREE?`<div style="font-size:13px;color:var(--muted)">Brezplačna poštnina nad ${fmt(FREE)}${fakeIf(SF)}</div>`:''}<div class="t"><span>Skupaj</span><span>${fmt(sub+ship)}</span></div></div>
   <form id="orderForm"><label for="oName">Ime in priimek<input id="oName" required autocomplete="name"></label><label for="oMail">E-pošta<input id="oMail" type="email" required autocomplete="email"></label><label for="oTel">Telefon<input id="oTel" type="tel" autocomplete="tel"></label><label for="oAddr">Naslov za dostavo<textarea id="oAddr" rows="2" required autocomplete="street-address"></textarea></label><label for="oNote">Opomba<input id="oNote"></label><button class="btn dark" type="submit">Oddaj naročilo</button></form>`;
 }
 $('#cartBody').addEventListener('click',e=>{const b=e.target.closest('[data-q]');if(b)setQ(b.dataset.q,(cart[b.dataset.q]||0)+ +b.dataset.d);if(e.target.closest('a'))closeCart()});
@@ -600,57 +572,74 @@ function closeCart(){$('#drawer').classList.remove('open');$('#scrim').classList
 $('#cartOpen').onclick=()=>{renderCart();openCart()};$('#cartClose').onclick=closeCart;$('#scrim').onclick=closeCart;
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeCart()});
 document.addEventListener('click',e=>{const b=e.target.closest('[data-add]');if(b){add(b.dataset.add)}});
-renderCart();
 
 /* ---------- shop ---------- */
-$('#shop').innerHTML=PRODUCTS.map(p=>`<article class="prod${p.feat?' feat':''}">${pimg(p.k)}<div class="label">${p.t}</div><h3>${p.n}</h3><p style="color:var(--muted);font-size:15px">${p.d}</p><div class="row"><b>${fmt(p.p)}</b><button class="btn mint sm" type="button" data-add="${p.k}">Dodaj v košarico</button></div></article>`).join('');
+function renderShop(){$('#shop').innerHTML=PRODUCTS.map(p=>`<article class="prod${p.feat?' feat':''}">${pimg(p.k)}<div class="label">${esc(p.t)}</div><h3>${esc(p.n)}</h3><p style="color:var(--muted);font-size:15px">${esc(p.d)}</p><div class="row"><b>${fmt(p.p)}</b><button class="btn mint sm" type="button" data-add="${p.k}">Dodaj v košarico</button></div></article>`).join('')}
+
+/* ---------- prices ---------- */
+function renderPrices(){
+  const ck=C.cenik||{};const pk=ck.paketi||[];
+  const cls={mint:' mint',roza:' pink'};
+  $('#pkgs').innerHTML=pk.map(x=>`<div class="box${cls[x.barva]||''}"><div class="label">${esc(x.oznaka||'Paket')}</div><h3>${esc(x.ime)}</h3><div class="price">${fmt(num(x.cena))}</div><ul>${(x.vkljuceno||[]).map(t=>`<li>${esc(t)}</li>`).join('')}</ul><a class="btn ${x.barva==='mint'?'dark':'ghost'}" href="#lokacije">Najdi prevzemno mesto</a></div>`).join('');
+  $('#miniPrices').innerHTML=pk.slice(0,3).map(x=>`<div><dt>${esc(x.ime)}</dt><dd>${fmt(num(x.cena))}</dd></div>`).join('');
+  $('#extras').innerHTML=(ck.dodatne||[]).map(x=>`<div><b>${esc(x.ime)}</b><span>${fmt(num(x.cena))}</span></div>`).join('');
+  $('#terms').innerHTML=(ck.roki||[]).map(x=>`<div class="box${x.poudarjeno?' mint':''}"><b>${esc(x.naslov)}</b><p>${esc(x.besedilo)}</p></div>`).join('');
+}
+function renderAbout(){
+  const o=C.onas||{};$('#aboutLede').textContent=o.uvod||'';
+  const cls={mint:' mint',roza:' pink'};
+  $('#about').innerHTML=(o.okvirji||[]).map(x=>`<div class="box${cls[x.barva]||''}"><h3>${esc(x.naslov)}</h3><p>${esc(x.besedilo)}${fakeIf(x.vzorec)}</p></div>`).join('');
+}
 
 /* ---------- season strip ---------- */
-(function(){
-  const m=new Date().getMonth();let html;
-  if(m>=9||m<=1) html=`Zimsko čiščenje z dodatno zaščito za mrzle dni · 16,90 € · <a href="#ciscenje">Več</a>`;
-  else if(m<=4) html=`Pomlad je tu: beljenje rumene gume od 38,80 € · <a href="#ciscenje">Več</a>`;
-  else html=`Poletje v čistih supergah: Premium čiščenje 15,90 € · <a href="#ciscenje">Več</a>`;
+function renderSeason(){
+  const ps=C.pasica||{};const m=new Date().getMonth();
+  const key=m===11||m<=1?'zima':m<=4?'pomlad':m<=7?'poletje':'jesen';
+  const t=ps[key];const s=$('#season');
   let closed=false;try{closed=sessionStorage.getItem('sc-season')==='1'}catch(e){}
-  const s=$('#season');s.innerHTML=html+`<button class="x" type="button" aria-label="Zapri pasico">×</button>`;
-  if(!closed)s.hidden=false;
+  if(!ps.vklopljena||!t||closed){s.hidden=true;return}
+  s.innerHTML=`${esc(t)} · <a href="#ciscenje">Več</a><button class="x" type="button" aria-label="Zapri pasico">×</button>`;s.hidden=false;
   s.querySelector('.x').onclick=()=>{s.hidden=true;try{sessionStorage.setItem('sc-season','1')}catch(e){}};
-})();
+}
 $('#burger').onclick=()=>{const l=$('#links');l.classList.toggle('open');$('#burger').setAttribute('aria-expanded',l.classList.contains('open'))};
 $('#links').addEventListener('click',()=>{$('#links').classList.remove('open')});
 
 /* ---------- map ---------- */
-(function(){
-  const SI=[[13.38,46.52],[13.72,46.53],[14.12,46.48],[14.55,46.40],[14.83,46.50],[15.06,46.65],[15.43,46.66],[15.65,46.70],[16.00,46.68],[16.12,46.86],[16.36,46.84],[16.60,46.47],[16.25,46.50],[16.00,46.30],[15.65,46.20],[15.60,46.05],[15.70,45.85],[15.30,45.75],[15.30,45.47],[14.95,45.48],[14.60,45.65],[14.40,45.48],[14.10,45.47],[13.88,45.43],[13.60,45.45],[13.70,45.60],[13.85,45.65],[13.58,45.80],[13.65,46.00],[13.50,46.20],[13.65,46.30],[13.40,46.35]];
-  const X=lon=>(lon-13.2)*96*0.69+20, Y=lat=>(46.95-lat)*96+20;
-  const pts=SI.map(([a,b])=>X(a).toFixed(1)+','+Y(b).toFixed(1)).join(' ');
-  // place Ljubljana pins in a small ring so they don't overlap
-  const lj=LOCS.filter(l=>l.city==='Ljubljana');
-  const xy=l=>{if(l.city!=='Ljubljana')return[X(l.lon),Y(l.lat)];const i=lj.indexOf(l),a=-Math.PI/2+i*Math.PI/2;return[X(14.505)+Math.cos(a)*15,Y(46.053)+Math.sin(a)*15]};
-  const W=X(16.8)+20,H=Y(45.2)+10;
+const CITY={Ljubljana:[14.505,46.053],Kranj:[14.355,46.239],Maribor:[15.646,46.554],Celje:[15.267,46.236],Koper:[13.73,45.548],'Novo mesto':[15.169,45.803],'Nova Gorica':[13.648,45.956],Zagreb:[15.966,45.813]};
+const SI=[[13.38,46.52],[13.72,46.53],[14.12,46.48],[14.55,46.40],[14.83,46.50],[15.06,46.65],[15.43,46.66],[15.65,46.70],[16.00,46.68],[16.12,46.86],[16.36,46.84],[16.60,46.47],[16.25,46.50],[16.00,46.30],[15.65,46.20],[15.60,46.05],[15.70,45.85],[15.30,45.75],[15.30,45.47],[14.95,45.48],[14.60,45.65],[14.40,45.48],[14.10,45.47],[13.88,45.43],[13.60,45.45],[13.70,45.60],[13.85,45.65],[13.58,45.80],[13.65,46.00],[13.50,46.20],[13.65,46.30],[13.40,46.35]];
+const MX=lon=>(lon-13.2)*96*0.69+20, MY=lat=>(46.95-lat)*96+20;
+function sel(id){document.querySelectorAll('#map [data-id],#locs [data-id]').forEach(e=>e.classList.toggle('sel',e.dataset.id===id))}
+function renderMap(){
+  const pts=SI.map(([a,b])=>MX(a).toFixed(1)+','+MY(b).toFixed(1)).join(' ');
+  const byCity={};LOCS.forEach(l=>(byCity[l.city]=byCity[l.city]||[]).push(l));
+  const xy=l=>{const [lo,la]=CITY[l.city]||CITY.Ljubljana;const g=byCity[l.city];const n=g.length,i=g.indexOf(l);if(n<2)return[MX(lo),MY(la)];const a=-Math.PI/2+i*2*Math.PI/n,r=n>3?15:11;return[MX(lo)+Math.cos(a)*r,MY(la)+Math.sin(a)*r]};
+  const W=MX(16.8)+20,H=MY(45.2)+10;
   let s=`<svg viewBox="0 0 ${W.toFixed(0)} ${H.toFixed(0)}" role="img" aria-label="Zemljevid prevzemnih mest"><polygon class="si" points="${pts}"/>
-  <path class="hr" d="M${X(15.3)},${Y(45.47)} C${X(15.6)},${Y(45.3)} ${X(16.3)},${Y(45.6)} ${X(16.6)},${Y(46.47)}"/>
-  <text class="c" x="${X(14.15)}" y="${Y(46.32)}">SLOVENIJA</text><text class="c" x="${X(15.75)}" y="${Y(45.55)}">HRVAŠKA</text>
-  <text x="${X(14.505)+22}" y="${Y(46.053)+4}">Ljubljana</text><text x="${X(13.73)+12}" y="${Y(45.548)+18}">Koper</text><text x="${X(15.966)+12}" y="${Y(45.813)+4}">Zagreb</text>`;
-  LOCS.forEach(l=>{const[x,y]=xy(l);s+=`<g class="pin" data-id="${l.id}" tabindex="0" role="button" aria-label="${l.name}"><circle class="o" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="8"/></g>`});
+  <path class="hr" d="M${MX(15.3)},${MY(45.47)} C${MX(15.6)},${MY(45.3)} ${MX(16.3)},${MY(45.6)} ${MX(16.6)},${MY(46.47)}"/>
+  <text class="c" x="${MX(14.15)}" y="${MY(46.32)}">SLOVENIJA</text><text class="c" x="${MX(15.75)}" y="${MY(45.55)}">HRVAŠKA</text>`;
+  Object.keys(byCity).forEach(c=>{const [lo,la]=CITY[c]||CITY.Ljubljana;const r=byCity[c].length>1?(byCity[c].length>3?22:18):12;s+=`<text x="${(MX(lo)+r).toFixed(1)}" y="${(MY(la)+(c==='Koper'?18:4)).toFixed(1)}">${esc(c)}</text>`});
+  LOCS.forEach(l=>{const[x,y]=xy(l);s+=`<g class="pin" data-id="${l.id}" tabindex="0" role="button" aria-label="${esc(l.name)}"><circle class="o" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="8"/></g>`});
   s+='</svg>';$('#map').innerHTML=s;
-  $('#locs').innerHTML=LOCS.map(l=>`<button class="loc" type="button" data-id="${l.id}"><span class="city">${l.city}</span><b>${l.name}</b><span>${l.h?l.h+' · ':''}${l.addr} ${FAKE}</span><span>pon–pet 10.00–19.00, sob 9.00–14.00 ${FAKE}</span></button>`).join('');
-  function sel(id){document.querySelectorAll('[data-id]').forEach(e=>e.classList.toggle('sel',e.dataset.id===id))}
-  $('#map').addEventListener('click',e=>{const g=e.target.closest('.pin');if(g){sel(g.dataset.id);const c=$('#locs .loc[data-id="'+g.dataset.id+'"]');c&&c.scrollIntoView({block:'nearest',behavior:'smooth'})}});
-  $('#map').addEventListener('keydown',e=>{const g=e.target.closest('.pin');if(g&&(e.key==='Enter'||e.key===' ')){e.preventDefault();sel(g.dataset.id)}});
-  $('#locs').addEventListener('click',e=>{const b=e.target.closest('.loc');if(b)sel(b.dataset.id)});
-  sel('gros');
-})();
+  $('#locs').innerHTML=LOCS.map(l=>`<button class="loc" type="button" data-id="${l.id}"><span class="city">${esc(l.city)}</span><b>${esc(l.name)}</b><span>${l.h?esc(l.h)+' · ':''}${esc(l.addr)}${fakeIf(l.fake)}</span>${l.hours?`<span>${esc(l.hours)}${fakeIf(l.fake)}</span>`:''}</button>`).join('');
+  if(LOCS[0])sel(LOCS[0].id);
+}
+$('#map').addEventListener('click',e=>{const g=e.target.closest('.pin');if(g){sel(g.dataset.id);const c=$('#locs .loc[data-id="'+g.dataset.id+'"]');c&&c.scrollIntoView({block:'nearest',behavior:'smooth'})}});
+$('#map').addEventListener('keydown',e=>{const g=e.target.closest('.pin');if(g&&(e.key==='Enter'||e.key===' ')){e.preventDefault();sel(g.dataset.id)}});
+$('#locs').addEventListener('click',e=>{const b=e.target.closest('.loc');if(b)sel(b.dataset.id)});
 
 /* ---------- gallery ---------- */
-(function(){
-  const G=[{i:0,c:'Air Max 95 · Premium čiščenje'},{i:Math.round(N*0.12),c:'Air Max 95 · Osnovno čiščenje'},{i:Math.round(N*0.5),c:'Air Max 95 · Zimsko čiščenje'},{i:Math.round(N*0.85),c:'Air Max 95 · Beljenje gume'}];
-  $('#gallery').innerHTML=G.map((g,n)=>`<figure><div class="ba" style="--p:50%"><img src="${FR.dirty[g.i]}" alt="Pred čiščenjem"><img class="after" src="${FR.clean[g.i]}" alt="Po čiščenju"><span class="l">PREJ</span><span class="r">POTEM</span><div class="bar"></div><input type="range" id="ba${n}" min="0" max="100" value="50" aria-label="Primerjaj pred in po"></div><figcaption>${g.c} <span class="fake">(vzorčna fotografija)</span></figcaption></figure>`).join('');
-  $('#gallery').addEventListener('input',e=>{if(e.target.type==='range')e.target.parentElement.style.setProperty('--p',e.target.value+'%')});
-})();
+function renderGallery(){
+  $('#gallery').innerHTML=(C.rezultati||[]).filter(g=>g&&g.pred&&g.po).map((g,n)=>`<figure><div class="ba" style="--p:50%"><img src="${esc(src(g.pred))}" alt="Pred čiščenjem" loading="lazy"><img class="after" src="${esc(src(g.po))}" alt="Po čiščenju" loading="lazy"><span class="l">PREJ</span><span class="r">POTEM</span><div class="bar"></div><input type="range" id="ba${n}" min="0" max="100" value="50" aria-label="Primerjaj pred in po"></div><figcaption>${esc(g.opis)}${g.vzorec?' <span class="fake">(vzorčna fotografija)</span>':''}</figcaption></figure>`).join('');
+}
+$('#gallery').addEventListener('input',e=>{if(e.target.type==='range')e.target.parentElement.style.setProperty('--p',e.target.value+'%')});
 
 /* ---------- events + social ---------- */
-$('#events').innerHTML=EVENTS.map(e=>`<div class="ev"><div class="d${e.p?' p':''}">${e.d}<small>${e.m}</small></div><div><b>${e.t}</b><span>${e.w} · ${e.h} ${FAKE}</span></div><a class="btn ghost sm" href="#lokacije">Kje je to?</a></div>`).join('');
+const MON=['JAN','FEB','MAR','APR','MAJ','JUN','JUL','AVG','SEP','OKT','NOV','DEC'],DAY=['ned','pon','tor','sre','čet','pet','sob'];
+function renderEvents(){
+  const today=new Date();today.setHours(0,0,0,0);
+  const ev=(C.dogodki||[]).filter(e=>e&&e.naslov&&e.datum).map(e=>({...e,dt:new Date(String(e.datum).slice(0,10)+'T12:00')})).filter(e=>!isNaN(e.dt)&&e.dt>=today).sort((a,b)=>a.dt-b.dt);
+  $('#events').innerHTML=ev.length?ev.map((e,i)=>`<div class="ev"><div class="d${i%2?' p':''}">${String(e.dt.getDate()).padStart(2,'0')}<small>${MON[e.dt.getMonth()]}</small></div><div><b>${esc(e.naslov)}</b><span>${esc(e.kraj)} · ${DAY[e.dt.getDay()]}${e.ura?', '+esc(e.ura):''}${fakeIf(e.vzorec)}</span></div><a class="btn ghost sm" href="#lokacije">Kje je to?</a></div>`).join(''):'<p class="empty">Trenutno ni napovedanih dogodkov. Spremljaj nas na Instagramu.</p>';
+}
 $('#social').innerHTML=[0,9,18,27,45,60,72,90].map((i,n)=>`<div class="post"><img src="${n%3?FR.clean[i]:FR.dirty[i]}" alt=""><span>${n%2?'TikTok':'Instagram'}</span></div>`).join('');
 
 /* ---------- contact ---------- */
@@ -674,16 +663,14 @@ addEventListener('hashchange',route);
 addEventListener('scroll',()=>$('#top').classList.toggle('scrolled',scrollY>10),{passive:true});
 
 /* ---------- callouts around the clean shoe ---------- */
-const CO=[
-  {k:'freshner',side:'L',row:0,ax:.27,ay:.18},
-  {k:'cleaner',side:'L',row:1,ax:.40,ay:.55},
-  {tag:'Menjava vezalk',side:'R',row:0,ax:.60,ay:.30},
-  {k:'protector',side:'R',row:1,ax:.86,ay:.56},
-  {tag:'Čiščenje podplata in gume',side:'R',row:2,ax:.55,ay:.86}
-];
-const coHTML=c=>c.k?`<div class="co pcard">${pimg(c.k)}<b>${P[c.k].n}</b><span class="pr">${fmt(P[c.k].p)}</span><button class="add" type="button" data-add="${c.k}">Dodaj v košarico</button></div>`:`<div class="co tag">${c.tag}</div>`;
-$('#coD').innerHTML=CO.map(coHTML).join('');
-$('#coM').innerHTML=CO.map(coHTML).join('');
+const SLOTS=[{side:'L',row:0,ax:.27,ay:.18},{side:'L',row:1,ax:.40,ay:.55},{side:'R',row:1,ax:.86,ay:.56}];
+let CO=[];
+const coHTML=c=>c.k?`<div class="co pcard">${pimg(c.k)}<b>${esc(P[c.k].n)}</b><span class="pr">${fmt(P[c.k].p)}</span><button class="add" type="button" data-add="${c.k}">Dodaj v košarico</button></div>`:`<div class="co tag">${esc(c.tag)}</div>`;
+function renderCallouts(){
+  const picks=PRODUCTS.filter(p=>p.co).slice(0,3);
+  CO=[...picks.map((p,i)=>({k:p.k,...SLOTS[i]})),{tag:'Menjava vezalk',side:'R',row:0,ax:.60,ay:.30},{tag:'Čiščenje podplata in gume',side:'R',row:2,ax:.55,ay:.86}];
+  $('#coD').innerHTML=CO.map(coHTML).join('');$('#coM').innerHTML=CO.map(coHTML).join('');
+}
 
 /* ---------- stage ---------- */
 function pick(f,set){let best=0,bd=1e9;for(let i=0;i<N;i++){if(!IMG[set][i])continue;let d=Math.abs(POS[i]-f);d=Math.min(d,N-d);if(d<bd){bd=d;best=i}}return best}
@@ -759,7 +746,9 @@ grip.addEventListener('pointermove',e=>{if(!wd)return;manualSplit=clamp((e.clien
 grip.addEventListener('pointerup',()=>wd=false);
 grip.addEventListener('keydown',e=>{const d=e.key==='ArrowLeft'?-.05:e.key==='ArrowRight'?.05:0;if(d){manualSplit=clamp((manualSplit??split)+d,0,1);manualAt=chapterPos();e.preventDefault()}});
 addEventListener('resize',layout);
-route();layout();
+function renderAll(){prepare();renderCart();renderShop();renderPrices();renderAbout();renderSeason();renderMap();renderGallery();renderEvents();renderCallouts();if(onHome)layout()}
+renderAll();route();layout();
+loadContent().then(renderAll);
 IMG.clean=new Array(N);IMG.dirty=new Array(N);
 (async function(){
   // 1) first frame of both sets, so the shoe shows at once

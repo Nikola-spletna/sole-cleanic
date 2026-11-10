@@ -1,0 +1,7 @@
+[
+  {"ime": "DRIPS Sneaker Care Box", "vrsta": "Celoten komplet", "opis": "Vsebuje čistilo, impregnacijski sprej, deodorant, majhno krpo, krtačo in vezalke.", "cena": 39.9, "slika": "/media/box.jpg", "izpostavljen": true, "ob_supergi": false},
+  {"ime": "DRIPS Cleaner", "vrsta": "Čistilo", "opis": "Čistilo za superge, ki ga uporabljamo pri vsakem čiščenju.", "cena": 13.9, "slika": "/media/cleaner.jpg", "izpostavljen": false, "ob_supergi": true},
+  {"ime": "DRIPS Freshner", "vrsta": "Deodorant", "opis": "Deodorant za svež vonj v notranjosti superg.", "cena": 11.9, "slika": "/media/freshner.jpg", "izpostavljen": false, "ob_supergi": true},
+  {"ime": "DRIPS Protector", "vrsta": "Impregnacijski sprej", "opis": "Impregnacijski sprej, ki superge zaščiti pred vodo in umazanijo.", "cena": 14.9, "slika": "/media/protector.jpg", "izpostavljen": false, "ob_supergi": true},
+  {"ime": "DRIPS čistilo & krtačka", "vrsta": "Komplet", "opis": "Čistilo skupaj s krtačko.", "cena": 16.9, "slika": "/media/set.jpg", "izpostavljen": false, "ob_supergi": false}
+]

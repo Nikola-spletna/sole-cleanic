@@ -1,0 +1,21 @@
+{
+  "paketi": [
+    {"ime": "Osnovno čiščenje", "oznaka": "Paket", "cena": 13.9, "barva": "bela", "vkljuceno": ["Čiščenje s krtačo", "Eko krpa in DRIPS čistilo", "Goba za gumijast podplat", "Čiščenje vezalk"]},
+    {"ime": "Premium čiščenje", "oznaka": "Najbolj priljubljeno", "cena": 15.9, "barva": "mint", "vkljuceno": ["Vse iz osnovnega čiščenja", "Notranji sprej proti vonju", "Impregnacija s sprejem ali kremo"]},
+    {"ime": "Zimsko čiščenje", "oznaka": "Za mrzle dni", "cena": 16.9, "barva": "roza", "vkljuceno": ["Vse iz premium čiščenja", "Dodatna zaščita za zimsko obutev"]}
+  ],
+  "dodatne": [
+    {"ime": "Dodatno čiščenje podplata (mokro, s čistilom)", "cena": 3},
+    {"ime": "Suho čiščenje vložka", "cena": 3},
+    {"ime": "Mokro čiščenje vložka", "cena": 5},
+    {"ime": "Nove bele vezalke", "cena": 5},
+    {"ime": "Odstranitev gub na sprednji kapici", "cena": 10},
+    {"ime": "Beljenje gume z osnovnim čiščenjem", "cena": 38.8},
+    {"ime": "Beljenje gume s premium čiščenjem", "cena": 40.8}
+  ],
+  "roki": [
+    {"naslov": "Redni rok", "besedilo": "Očiščene superge dostavimo v roku 7 delovnih dni.", "poudarjeno": false},
+    {"naslov": "Hitreje", "besedilo": "Vrnitev v 4 dneh za doplačilo 50 % (do 2 para) ali v 2 dneh za doplačilo 70 % (1 par).", "poudarjeno": false},
+    {"naslov": "3 pari ali več", "besedilo": "10 % popusta na celotno naročilo.", "poudarjeno": true}
+  ]
+}

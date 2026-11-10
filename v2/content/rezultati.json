@@ -1,0 +1,6 @@
+[
+  {"pred": "frames/d000.jpg", "po": "frames/c000.jpg", "opis": "Air Max 95 · Premium čiščenje", "vzorec": true},
+  {"pred": "frames/d013.jpg", "po": "frames/c013.jpg", "opis": "Air Max 95 · Osnovno čiščenje", "vzorec": true},
+  {"pred": "frames/d054.jpg", "po": "frames/c054.jpg", "opis": "Air Max 95 · Zimsko čiščenje", "vzorec": true},
+  {"pred": "frames/d092.jpg", "po": "frames/c092.jpg", "opis": "Air Max 95 · Beljenje gume", "vzorec": true}
+]
