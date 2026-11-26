@@ -305,7 +305,7 @@ footer.foot nav{display:flex;flex-wrap:wrap;gap:14px}
     <div class="stage" id="stage">
       <div class="glow" style="width:46vw;height:46vw;left:-12vw;top:30vh;background:var(--mint)"></div>
       <div class="glow" style="width:40vw;height:40vw;right:-14vw;top:-6vh;background:var(--pink)"></div>
-      <canvas id="cv" aria-label="Superga se med pomikanjem vrti in očisti"></canvas>
+      <canvas id="cv" aria-label="Superga se med pomikanjem očisti"></canvas>
       <img id="fallback" src="frames/d000.jpg" alt="Superga">
       <div class="ov" id="ov">
         <div class="wipe" id="wipe"><i id="grip" tabindex="0" role="slider" aria-label="Prej in potem" aria-valuemin="0" aria-valuemax="100">⇆</i></div>
@@ -688,12 +688,11 @@ const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const wrap=f=>((f%N)+N)%N;
 function chapterPos(){const r=chapters[0].getBoundingClientRect();return clamp(-r.top/chapters[0].offsetHeight,0,chapters.length-1)}
 function targets(c){
-  // unwrapped frame position: grows monotonically with scroll, so the spin is proportional and never takes a shortcut
-  if(c<0.5)return{f:N*(c/0.5),split:1,used:0};
-  if(c<1.5)return{f:N,split:1-ease(clamp((c-0.6)/0.7,0,1)),used:0};
-  if(c<2.5)return{f:N,split:0,used:c>1.62&&c<2.42?1:0};
-  if(c<6.5)return{f:N+N*clamp((c-2.5)/4,0,1),split:0,used:0};
-  return{f:2*N,split:0,used:0};
+  // shoe stays still in side view; only the dirty/clean wipe moves
+  if(c<0.5)return{f:0,split:1,used:0};
+  if(c<1.5)return{f:0,split:1-ease(clamp((c-0.6)/0.7,0,1)),used:0};
+  if(c<2.5)return{f:0,split:0,used:c>1.62&&c<2.42?1:0};
+  return{f:0,split:0,used:0};
 }
 function layout(){
   if(!onHome)return;
@@ -754,10 +753,7 @@ IMG.clean=new Array(N);IMG.dirty=new Array(N);
 (async function(){
   // 1) first frame of both sets, so the shoe shows at once
   const [c0,d0]=await Promise.all([load(FR.clean[0]),load(FR.dirty[0])]);IMG.clean[0]=c0;IMG.dirty[0]=d0;ready=true;stage.classList.add('ready');
-  // 2) then every 3rd frame (the real photos), then the in-between frames; 6 at a time
-  const order=[];for(const step of [3,1])for(let i=0;i<N;i+=step)for(const set of ['dirty','clean'])if(!order.some(o=>o[0]===set&&o[1]===i)&&i!==0)order.push([set,i]);
-  let k=0;async function worker(){while(k<order.length){const [set,i]=order[k++];IMG[set][i]=await load(FR[set][i])}}
-  await Promise.all([1,2,3,4,5,6].map(worker));
+  // shoe no longer spins, so only frame 0 of each set is needed
 })();
 requestAnimationFrame(frame);
 (function(){
