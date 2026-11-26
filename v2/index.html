@@ -682,17 +682,18 @@ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 const load=src=>new Promise(r=>{const i=new Image();i.onload=()=>(i.decode?i.decode().catch(()=>{}):Promise.resolve()).then(()=>r(i));i.src=src});
 let IMG={clean:[],dirty:[]},ready=false;
 let W=0,H=0,dpr=1,shoe={x:0,y:0,w:0,h:0},mobile=false;
-let cur=0,split=1,manualSplit=null,manualAt=0;
+let cur=0,split=1,manualSplit=null,manualAt=0,spinInit=false;
 const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const wrap=f=>((f%N)+N)%N;
 function chapterPos(){const r=chapters[0].getBoundingClientRect();return clamp(-r.top/chapters[0].offsetHeight,0,chapters.length-1)}
 function targets(c){
-  if(c<0.6)return{f:N*ease(c/0.6),split:1,used:0};
-  if(c<1.5)return{f:0,split:1-ease(clamp((c-0.6)/0.7,0,1)),used:0};
-  if(c<2.5)return{f:0,split:0,used:c>1.62&&c<2.42?1:0};
-  if(c<6.5)return{f:N*ease(clamp((c-2.5)/4,0,1)),split:0,used:0};
-  return{f:0,split:0,used:0};
+  // unwrapped frame position: grows monotonically with scroll, so the spin is proportional and never takes a shortcut
+  if(c<0.5)return{f:N*(c/0.5),split:1,used:0};
+  if(c<1.5)return{f:N,split:1-ease(clamp((c-0.6)/0.7,0,1)),used:0};
+  if(c<2.5)return{f:N,split:0,used:c>1.62&&c<2.42?1:0};
+  if(c<6.5)return{f:N+N*clamp((c-2.5)/4,0,1),split:0,used:0};
+  return{f:2*N,split:0,used:0};
 }
 function layout(){
   if(!onHome)return;
@@ -719,20 +720,20 @@ function frame(){
   requestAnimationFrame(frame);
   if(!ready||!onHome)return;
   const c=chapterPos(),T=targets(c);
-  let d=wrap(T.f)-wrap(cur);if(d>N/2)d-=N;if(d<-N/2)d+=N;
-  const stepMax=0.9*N/36;cur=wrap(cur+(reduce?d:clamp(d*0.2,-stepMax,stepMax)));
+  if(!spinInit){cur=T.f;spinInit=true}
+  const d=T.f-cur;cur=(reduce||Math.abs(d)<0.02)?T.f:cur+d*0.35;
   let s=T.split;if(manualSplit!==null&&Math.abs(c-manualAt)<0.25)s=manualSplit;else manualSplit=null;
   split+=(s-split)*(reduce?1:0.18);
   octx.setTransform(1,0,0,1,0,0);octx.fillStyle='#fff';octx.fillRect(0,0,off.width,off.height);
   const sx=(shoe.x+shoe.w*split)*dpr;
-  if(split>0.001){octx.save();octx.beginPath();octx.rect(0,0,sx,off.height);octx.clip();drawFrames('dirty',cur);octx.restore()}
-  if(split<0.999){octx.save();octx.beginPath();octx.rect(sx,0,off.width-sx,off.height);octx.clip();drawFrames('clean',cur);octx.restore()}
+  if(split>0.001){octx.save();octx.beginPath();octx.rect(0,0,sx,off.height);octx.clip();drawFrames('dirty',wrap(cur));octx.restore()}
+  if(split<0.999){octx.save();octx.beginPath();octx.rect(sx,0,off.width-sx,off.height);octx.clip();drawFrames('clean',wrap(cur));octx.restore()}
   ctx.setTransform(1,0,0,1,0,0);ctx.fillStyle='#fff';ctx.fillRect(0,0,cv.width,cv.height);
   const g=ctx.createLinearGradient(0,0,0,cv.height);const fy=(shoe.y+shoe.h*0.86)/H;
   g.addColorStop(0,'#ffffff');g.addColorStop(clamp(fy-0.04,0,1),'#ffffff');g.addColorStop(clamp(fy+0.02,0,1),'#f3f7f6');g.addColorStop(1,'#ecf3f1');
   ctx.fillStyle=g;ctx.fillRect(0,0,cv.width,cv.height);
   ctx.globalCompositeOperation='multiply';ctx.drawImage(off,0,0);ctx.globalCompositeOperation='source-over';
-  const wipeOn=c>0.45&&c<1.6;const wx=shoe.x+shoe.w*split;
+  const wipeOn=c>0.52&&c<1.6;const wx=shoe.x+shoe.w*split;
   wipe.style.left=wx+'px';wipe.style.top=(shoe.y+shoe.h*0.02)+'px';wipe.style.height=(shoe.h*0.9)+'px';wipe.style.opacity=wipeOn?1:0;grip.style.pointerEvents=wipeOn?'auto':'none';
   grip.setAttribute('aria-valuenow',Math.round(split*100));
   tPrej.style.left=Math.max(16,shoe.x)+'px';tPrej.style.top=(shoe.y-6)+'px';tPotem.style.left=Math.min(W-70,shoe.x+shoe.w-60)+'px';tPotem.style.top=(shoe.y-6)+'px';
